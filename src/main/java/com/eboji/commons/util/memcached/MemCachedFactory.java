@@ -13,8 +13,8 @@ import com.whalin.MemCached.SockIOPool;
 /**
  * @author zhoucl
  */
-public abstract class MemCachedUtil {
-	private static final Logger logger = LoggerFactory.getLogger(MemCachedUtil.class);
+public abstract class MemCachedFactory {
+	private static final Logger logger = LoggerFactory.getLogger(MemCachedFactory.class);
 	
 	private String memcacheName = "default-memcache";
 	
@@ -26,7 +26,7 @@ public abstract class MemCachedUtil {
 	
 	private MemcachedConfiguration configuration;
 	
-	public MemCachedUtil(MemcachedConfiguration configuration) {
+	public MemCachedFactory(MemcachedConfiguration configuration) {
 		this.configuration = configuration;
 	}
 	

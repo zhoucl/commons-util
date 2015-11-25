@@ -29,7 +29,6 @@ public class ConnectionManager {
 		TSocket socket = null;
 		try {
 			socketBean = connectionProvider.getConnection();
-			System.out.println("===>" + socketBean.getPoolIndex());
 			socket = socketBean.gettSocket();
 			socketThreadSafe.set(socket);
 
