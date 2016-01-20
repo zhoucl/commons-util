@@ -16,6 +16,7 @@
 		<thrift-version>0.9.3</thrift-version>
 		<commons-pool-version>1.6</commons-pool-version>
 		<zookeeper-version>3.4.6</zookeeper-version>
+		<fastjson-version>1.2.7</fastjson-version>
 	</properties>
 
 	<dependencies>
@@ -49,6 +50,12 @@
 					<groupId>org.slf4j</groupId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${fastjson-version}</version>
 		</dependency>
 		
 		<dependency>
