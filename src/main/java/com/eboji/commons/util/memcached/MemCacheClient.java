@@ -7,18 +7,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.eboji.commons.util.date.DateUtil;
-import com.whalin.MemCached.MemCachedClient;
 import com.whalin.MemCached.SockIOPool;
+import com.whalin.MemCached.MemCachedClient;
 
 /**
  * @author zhoucl
  */
-public abstract class MemCachedFactory {
-	private static final Logger logger = LoggerFactory.getLogger(MemCachedFactory.class);
+public class MemCacheClient {
+	private static final Logger logger = LoggerFactory.getLogger(MemCacheClient.class);
 	
-	private String memcacheName = "default-memcache";
+	private String name = "default-memcache";
 	
-	private String[] serverList = { "localhost:11211" };
+	private String[] servers = { "localhost:11211" };
 	
 	private Integer[] weights = {1};
 	
@@ -26,14 +26,25 @@ public abstract class MemCachedFactory {
 	
 	private MemcachedConfiguration configuration;
 	
-	public MemCachedFactory(MemcachedConfiguration configuration) {
+	public MemCacheClient(MemcachedConfiguration configuration, String[] servers, Integer[] weights, String name) {
 		this.configuration = configuration;
+		this.servers = servers;
+		this.weights = weights;
+		this.name = name;
+		
+		initialContext();
+	}
+	
+	public MemCacheClient() {
+		this.configuration = new MemcachedConfiguration();
+		
+		initialContext();
 	}
 	
 	public void initialContext() {
-		if(serverList.length == weights.length) {
+		if(servers.length == weights.length) {
 			SockIOPool pool = SockIOPool.getInstance(getMemcacheName(), true);
-			pool.setServers( serverList );
+			pool.setServers( servers );
 	
 			pool.setInitConn(configuration.getMinConn());
 			pool.setMinConn(configuration.getMinConn());
@@ -60,6 +71,10 @@ public abstract class MemCachedFactory {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public Object get(String key) {
+		return mc.get(key);
 	}
 	
 	public boolean add(String key, Object value) {
@@ -145,18 +160,26 @@ public abstract class MemCachedFactory {
 	}	
 	
 	public String getMemcacheName() {
-		return memcacheName;
+		return name;
 	}
 
 	public void setMemcacheName(String memcacheName) {
-		this.memcacheName = memcacheName;
+		this.name = memcacheName;
 	}
 
 	public String[] getServerList() {
-		return serverList;
+		return servers;
 	}
 
 	public void setServerList(String[] serverList) {
-		this.serverList = serverList;
+		this.servers = serverList;
+	}
+	
+	public static void main(String[] args) {
+		MemcachedConfiguration config = new MemcachedConfiguration();
+		MemCacheClient client = new MemCacheClient(config, new String[]{"192.168.6.164:11211"}, new Integer[]{1}, "default-name");
+		client.add("TEST111", "12213213213");
+		
+		System.out.println(client.get("TEST111"));
 	}
 }

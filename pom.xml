@@ -4,7 +4,7 @@
 
 	<groupId>com.eboji</groupId>
 	<artifactId>commons-util</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>commons-util</name>
@@ -17,6 +17,7 @@
 		<commons-pool-version>1.6</commons-pool-version>
 		<zookeeper-version>3.4.6</zookeeper-version>
 		<fastjson-version>1.2.7</fastjson-version>
+		<redis-version>2.8.0</redis-version>
 	</properties>
 
 	<dependencies>
@@ -52,10 +53,18 @@
 			</exclusions>
 		</dependency>
 		
+		<!-- fastjson -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 			<version>${fastjson-version}</version>
+		</dependency>
+		
+		<!-- redis -->
+		<dependency>
+			<groupId>redis.clients</groupId>
+		    <artifactId>jedis</artifactId>
+		    <version>${redis-version}</version>
 		</dependency>
 		
 		<dependency>
