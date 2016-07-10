@@ -91,11 +91,11 @@ public class MemCacheClient {
 		boolean ret = mc.add(key, value, expiry);
 		if(ret) {
 			logger.info("add the key = [" + key + "] to memcached expiry with " +
-				DateUtil.formatDate(expiry, DateUtil.FORMATTER_YYYYMMDDHHMMSS) + 
+				DateUtil.formatDate(expiry, DateUtil.FORMATTER_YYYY_MM_DDHHMMSS) + 
 				" successed.");
 		} else {
 			logger.warn("add the key = [" + key + "] to memcached expiry with " +
-				DateUtil.formatDate(expiry, DateUtil.FORMATTER_YYYYMMDDHHMMSS) +
+				DateUtil.formatDate(expiry, DateUtil.FORMATTER_YYYY_MM_DDHHMMSS) +
 				" failed.");
 		}
 		return ret;
@@ -115,11 +115,11 @@ public class MemCacheClient {
 		boolean ret = mc.set(key, value, expiry);
 		if(ret) {
 			logger.info("set the key = [" + key + "] to memcached expiry with " +
-				DateUtil.formatDate(expiry, DateUtil.FORMATTER_YYYYMMDDHHMMSS) + 
+				DateUtil.formatDate(expiry, DateUtil.FORMATTER_YYYY_MM_DDHHMMSS) + 
 				" successed.");
 		} else {
 			logger.warn("set the key = [" + key + "] to memcached expiry with " +
-				DateUtil.formatDate(expiry, DateUtil.FORMATTER_YYYYMMDDHHMMSS) +
+				DateUtil.formatDate(expiry, DateUtil.FORMATTER_YYYY_MM_DDHHMMSS) +
 				" failed.");
 		}
 		return ret;
@@ -139,11 +139,11 @@ public class MemCacheClient {
 		boolean ret = mc.replace(key, value, expiry);
 		if(ret) {
 			logger.info("replace the key = [" + key + "] to memcached expiry with " +
-				DateUtil.formatDate(expiry, DateUtil.FORMATTER_YYYYMMDDHHMMSS) + 
+				DateUtil.formatDate(expiry, DateUtil.FORMATTER_YYYY_MM_DDHHMMSS) + 
 				" successed.");
 		} else {
 			logger.warn("replace the key = [" + key + "] to memcached expiry with " +
-				DateUtil.formatDate(expiry, DateUtil.FORMATTER_YYYYMMDDHHMMSS) +
+				DateUtil.formatDate(expiry, DateUtil.FORMATTER_YYYY_MM_DDHHMMSS) +
 				" failed.");
 		}
 		return ret;

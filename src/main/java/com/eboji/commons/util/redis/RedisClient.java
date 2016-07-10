@@ -99,7 +99,42 @@ public class RedisClient {
 		}
 	}
 	
-	public String getPop(String key) {
+	public boolean exists(String key) {
+		Jedis jedis = null;
+		boolean value = false;
+		
+		try {
+			if(jedisPool != null) {
+				jedis = jedisPool.getResource();
+				value = jedis.exists(key);
+			}
+		} catch (Exception e) {
+			logger.error("Redis exists key = [" + key + "] failed!", e.getCause());
+		} finally {
+			if(jedis != null)
+				jedis.close();
+		}
+		
+		return value;
+	}
+	
+	public void remove(String key) {
+		Jedis jedis = null;
+		try {
+			if(jedisPool != null) {
+				jedis = jedisPool.getResource();
+				jedis.del(key);
+			}
+		} catch (Exception e) {
+			logger.error("Redis hexists key = [" + key + "] failed!",
+					e.getCause());
+		} finally {
+			if(jedis != null)
+				jedis.close();
+		}
+	}
+	
+	public String hlpop(String key) {
 		String value = null;
 		Jedis jedis = null;
 		
@@ -144,7 +179,8 @@ public class RedisClient {
 				values = jedis.lrange(key, start, end);
 			}
 		} catch (Exception e) {
-			logger.error("Redis lrange key = [" + key + "] failed!", e.getCause());
+			logger.error("Redis lrange key = [" + key + "], start = [" + start + "], end = [" 
+					+ end +"] failed!", e.getCause());
 		} finally {
 			if(jedis != null)
 				jedis.close();
@@ -153,17 +189,35 @@ public class RedisClient {
 		return values;
 	}
 	
-	public void hmset(String key, Map<String, String> value) {
+	public void hmset(String key, Map<String, String> value, Integer expire) {
 		Jedis jedis = null;
 		
 		try {
 			if(jedisPool != null) {
 				jedis = jedisPool.getResource();
 				jedis.hmset(key, value);
-				jedis.expire(key, 3600);
+				if(expire != null && expire > 0)
+					jedis.expire(key, expire);
 			}
 		} catch (Exception e) {
 			logger.error("Redis hmset key = [" + key + "] failed!", e.getCause());
+		} finally {
+			if(jedis != null)
+				jedis.close();
+		}
+	}
+	
+	public void hmset(String key, String field, String value) {
+		Jedis jedis = null;
+		
+		try {
+			if(jedisPool != null) {
+				jedis = jedisPool.getResource();
+				jedis.hset(key, field, value);
+			}
+		} catch (Exception e) {
+			logger.error("Redis hmset key = [" + key + "], field = [" + field + "] failed!",
+					e.getCause());
 		} finally {
 			if(jedis != null)
 				jedis.close();
@@ -203,7 +257,27 @@ public class RedisClient {
 					value = vList.get(0);
 			}
 		} catch (Exception e) {
-			logger.error("Redis hmset key = [" + key + "] failed!", e.getCause());
+			logger.error("Redis hmget key = [" + key + "], field = [" + field + "] failed!", 
+					e.getCause());
+		} finally {
+			if(jedis != null)
+				jedis.close();
+		}
+		
+		return value;
+	}
+	
+	public boolean hexists(String key, String field) {
+		Jedis jedis = null;
+		boolean value =  false;
+		try {
+			if(jedisPool != null) {
+				jedis = jedisPool.getResource();
+				value = jedis.hexists(key, field);
+			}
+		} catch (Exception e) {
+			logger.error("Redis hexists key = [" + key + "], field = [" + field + "] failed!",
+					e.getCause());
 		} finally {
 			if(jedis != null)
 				jedis.close();
@@ -266,6 +340,6 @@ public class RedisClient {
 		map.put("a3", "LSKJALJDLASJFLAJLJLKSAJLKJLSAJDLSAJDLSAJDLSAJDLSAJDLSAKJDLSAJDLSAJDLSAKJDLAKJDLSAJDLSAKJ");
 		map.put("a4", "LSKJALJDLASJFLAJLJLKSAJLKJLSAJDLSAJDLSAJDLSAJDLSAJDLSAKJDLSAJDLSAJDLSAKJDLAKJDLSAJDLSAKJ");
 		map.put("a5", "LSKJALJDLASJFLAJLJLKSAJLKJLSAJDLSAJDLSAJDLSAJDLSAJDLSAKJDLSAJDLSAJDLSAKJDLAKJDLSAJDLSAKJ");
-		client.hmset("a", map);
+		client.hmset("product", map, 1800);
 	}
  }
